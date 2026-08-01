@@ -1,1 +1,2 @@
 this is file 2.txt
+one more line from Remote Repo
