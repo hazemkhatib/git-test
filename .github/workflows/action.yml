@@ -33,14 +33,14 @@ jobs:
         run: |
           chmod +x test.sh
           ./test.sh
-          
+
   Job3:
     runs-on: ubuntu-latest
     env:
       FIRST_NAME: "Hazem"
     steps:
       - name: Print First Name (by using env)
-        run: echo "First Name: ${{ env.FIRST_NAME }}"
+        run: echo "First Name: {{ env.FIRST_NAME }}"
 
       - name: Print Last Name (by using local variable)
         run: |
@@ -48,4 +48,4 @@ jobs:
           echo "Last Name: $LAST_NAME"
 
       - name: Print phone number (by using secret)
-        run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}" 
+        run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
