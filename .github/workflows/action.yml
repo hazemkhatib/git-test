@@ -1,54 +1,65 @@
-
-HEAD
-
-cat << 'EOF' > .github/workflows/action.yml
-fd86daf (new workflows)
-name: GitHub Actions Exercise
+name: My GitHub Actions
 
 on:
   push:
-    branches: [ main ]
   workflow_dispatch:
 
-    jobs:
-      Job1:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v4
+jobs:
 
-          - name: Print all files that you have in repo
-            run: |
-              cat 1.txt
-              cat 2.txt
+  Job1:
+    runs-on: ubuntu-latest
 
-          - name: Run file test.sh
-            run: |
-              chmod +x test.sh
-              ./test.sh
+    steps:
+      - name: Print Hello
+        run: echo "Hello"
 
-      Job2:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v4
+      - name: Print Ubuntu version
+        run: lsb_release -a
 
-          - name: Run inline script
-            run: echo "Executing Job2"
+      - name: Print commit SHA
+        run: echo "Commit SHA: ${{ github.sha }}"
 
-      Job3:
-        runs-on: ubuntu-latest
-        env:
-          FIRST_NAME: "Hazem"
-        steps:
-          - name: Print First Name (by using env)
-            run: echo "First Name: $FIRST_NAME"
 
-          - name: Print Last Name (by using local variable)
-            run: |
-              LAST_NAME="YourLastName"
-              echo "Last Name: $LAST_NAME"
+  Job2:
+    runs-on: ubuntu-latest
+    needs: Job1
 
-      - name: Print phone number (by using secret)
-        run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
-EOF
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print all files
+        run: |
+          echo "===== Files in repository ====="
+          ls -la
+
+          echo "===== 1.txt ====="
+          cat 1.txt
+
+          echo "===== 2.txt ====="
+          cat 2.txt
+
+      - name: Run test.sh
+        run: |
+          chmod +x ./test.sh
+          ./test.sh
+
+
+  Job3:
+    runs-on: ubuntu-latest
+    needs: Job2
+
+    env:
+      FIRST_NAME: "Hazem"
+
+    steps:
+      - name: Print First Name
+        run: echo "First Name: $FIRST_NAME"
+
+      - name: Print Last Name
+        run: |
+          LAST_NAME="Khateb"
+          echo "Last Name: $LAST_NAME"
+
+      - name: Print Phone Number
+        run: echo "Phone Number: ${{ secrets.PHONE }}"

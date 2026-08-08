@@ -1,3 +1,3 @@
-#!/bin/bash
- cat 1.txt
- cat 2.txt
+#!/bin/bash 
+cat 1.txt
+cat 2.txt
