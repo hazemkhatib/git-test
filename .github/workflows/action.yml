@@ -1,24 +1,12 @@
-name: GitHub Actions Workflow
+name: GitHub Actions Exercise
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   Job1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print Hello msg
-        run: echo "Hello"
-
-      - name: Print version of ubuntu
-        run: lsb_release -a
-
-      - name: Print sha- of commit
-        run: echo "Commit SHA is ${{ github.sha }}"
-
-  Job2:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -34,13 +22,22 @@ jobs:
           chmod +x test.sh
           ./test.sh
 
+  Job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run inline script
+        run: echo "Executing Job2"
+
   Job3:
     runs-on: ubuntu-latest
     env:
       FIRST_NAME: "Hazem"
     steps:
       - name: Print First Name (by using env)
-        run: echo "First Name: {{ env.FIRST_NAME }}"
+        run: echo "First Name: $FIRST_NAME"
 
       - name: Print Last Name (by using local variable)
         run: |
