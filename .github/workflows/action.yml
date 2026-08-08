@@ -6,44 +6,44 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-jobs:
-  Job1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Print all files that you have in repo
-        run: |
-          cat 1.txt
-          cat 2.txt
-
-      - name: Run file test.sh
-        run: |
-          chmod +x test.sh
-          ./test.sh
-
-  Job2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run inline script
-        run: echo "Executing Job2"
-
-  Job3:
-    runs-on: ubuntu-latest
-    env:
-      FIRST_NAME: "Hazem"
-    steps:
-      - name: Print First Name (by using env)
-        run: echo "First Name: $FIRST_NAME"
-
-      - name: Print Last Name (by using local variable)
-        run: |
-          LAST_NAME="YourLastName"
-          echo "Last Name: $LAST_NAME"
+    jobs:
+      Job1:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+    
+          - name: Print all files that you have in repo
+            run: |
+              cat 1.txt
+              cat 2.txt
+    
+          - name: Run file test.sh
+            run: |
+              chmod +x test.sh
+              ./test.sh
+    
+      Job2:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+    
+          - name: Run inline script
+            run: echo "Executing Job2"
+    
+      Job3:
+        runs-on: ubuntu-latest
+        env:
+          FIRST_NAME: "Hazem"
+        steps:
+          - name: Print First Name (by using env)
+            run: echo "First Name: $FIRST_NAME"
+    
+          - name: Print Last Name (by using local variable)
+            run: |
+              LAST_NAME="YourLastName"
+              echo "Last Name: $LAST_NAME"
 
       - name: Print phone number (by using secret)
         run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
