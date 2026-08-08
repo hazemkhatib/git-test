@@ -33,7 +33,7 @@ jobs:
         run: |
           chmod +x test.sh
           ./test.sh
- Job3:
+  Job3:
     runs-on: ubuntu-latest
     env:
       FIRST_NAME: "Hazem"
@@ -49,8 +49,3 @@ jobs:
       - name: Print phone number (by using secret)
         run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
 
- 
-          echo "Last Name: $LAST_NAME"
-
-      - name: Print phone number (by using secret)
-        run: echo "Phone Number: ${{ secrets.PHONE_NUMBER }}"
