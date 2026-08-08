@@ -17,7 +17,7 @@ jobs:
         run: lsb_release -a
 
       - name: Print commit SHA
-        run: echo 'Commit SHA:' ${{ github.sha }}
+        run: echo "Commit SHA: ${{ github.sha }}"
 
 
   Job2:
@@ -50,11 +50,11 @@ jobs:
     needs: Job2
 
     env:
-      FIRST_NAME: "Hazem"
+      FIRST_NAME: Hazem
 
     steps:
       - name: Print First Name
-        run: echo "First Name: $FIRST_NAME"
+        run: echo 'First Name:' $FIRST_NAME
 
       - name: Print Last Name
         run: |
@@ -62,4 +62,4 @@ jobs:
           echo "Last Name: $LAST_NAME"
 
       - name: Print Phone Number
-        run: echo "Phone Number:" ${{ secrets.PHONE }}
+        run: echo 'Phone Number:' ${{ secrets.PHONE }}
