@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'hazemkhatib'
+        DOCKER_USER = 'hazem08'
         IMAGE_NAME  = 'my-app'
     }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
@@ -15,18 +15,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // שימוש ב-sh עם מחרוזות Groovy תקינות
-                sh "docker build -t ${env.DOCKER_USER}/${env.IMAGE_NAME}:${env.BUILD_NUMBER} ."
-                sh "docker tag ${env.DOCKER_USER}/${env.IMAGE_NAME}:${env.BUILD_NUMBER} ${env.DOCKER_USER}/${env.IMAGE_NAME}:latest"
+                // בניית ה-Image באמצעות פקודת Shell רגילה
+                sh "docker build -t ${DOCKER_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
+                sh "docker tag ${DOCKER_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_USER}/${IMAGE_NAME}:latest"
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
+                // התחברות ל-Docker Hub והעלאת ה-Image
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
-                    sh 'echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin'
-                    sh "docker push ${env.DOCKER_USER}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
-                    sh "docker push ${env.DOCKER_USER}/${env.IMAGE_NAME}:latest"
+                    sh "echo \$DOCKER_HUB_PASS | docker login -u \$DOCKER_HUB_USER --password-stdin"
+                    sh "docker push ${DOCKER_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker push ${DOCKER_USER}/${IMAGE_NAME}:latest"
                 }
             }
         }
@@ -34,7 +35,8 @@ pipeline {
 
     post {
         always {
-            sh 'docker logout || true'
+            // ניקוי התחברות
+            sh "docker logout"
         }
     }
 }
