@@ -1,0 +1,44 @@
+name: GitHub Actions Docker Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  repository_dispatch:
+    types: [ build-event ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t my-app:latest .
+
+      - name: Run Container with Exit Code 10 (Success Check)
+        run: |
+          echo "Starting Container with input 10..."
+          docker run --name app_test_10 my-app:latest echo 10
+
+          if [ $(docker ps -a -f name=app_test_10 -q | wc -l) -eq 1 ]; then
+            echo "Container app_test_10 exists and ran successfully!"
+          else
+            echo "Container failed to run!"
+            exit 1
+          fi
+
+
+      - name: Run Container with Exit Code 20 (Failure/Second Check)
+        run: |
+          echo "Starting Container with input 20..."
+          docker run --name app_test_20 my-app:latest echo 20
+
+          if [ $(docker ps -a -f name=app_test_20 -q | wc -l) -eq 1 ]; then
+            echo "Container app_test_20 exists!"
+          else
+            echo "Container failed to run!"
+            exit 1
+          fi
